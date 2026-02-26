@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Catálogo - OldBackTCG</title>
+  <style>
+    :root { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; }
+    body { margin: 0; background: #0b0c10; color: #e9eef3; }
+    header { padding: 18px 16px; position: sticky; top: 0; background: rgba(11,12,16,.9); backdrop-filter: blur(8px); border-bottom: 1px solid rgba(255,255,255,.08); }
+    h1 { margin: 0 0 10px; font-size: 18px; }
+    .row { display: flex; gap: 10px; flex-wrap: wrap; }
+    input, select, button { border-radius: 10px; border: 1px solid rgba(255,255,255,.12); background: #11131a; color: #e9eef3; padding: 10px 12px; }
+    input { flex: 1; min-width: 220px; }
+    select { min-width: 160px; }
+    button { cursor: pointer; }
+    button.primary { background: #1f6feb; border-color: rgba(255,255,255,.12); }
+    button.danger { background: #b42318; }
+    main { padding: 14px 16px 92px; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+    .card { background: #11131a; border: 1px solid rgba(255,255,255,.08); border-radius: 14px; overflow: hidden; display:flex; flex-direction: column; }
+    .thumb { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: #0f1117; }
+    .pad { padding: 10px 10px 12px; display:flex; flex-direction: column; gap: 6px; }
+    .name { font-weight: 700; font-size: 13px; line-height: 1.2; }
+    .meta { font-size: 12px; opacity: .86; display:flex; gap: 8px; flex-wrap: wrap; }
+    .price { font-weight: 800; margin-top: 2px; }
+    .pill { font-size: 11px; padding: 2px 8px; border-radius: 999px; border: 1px solid rgba(255,255,255,.14); opacity: .92; }
+    .actions { margin-top: 6px; display:flex; gap: 8px; }
+    .actions button { flex:1; }
+    .footerbar { position: fixed; left: 0; right: 0; bottom: 0; padding: 10px 12px; background: rgba(11,12,16,.92); border-top: 1px solid rgba(255,255,255,.08); backdrop-filter: blur(8px); }
+    .footerbar .wrap { max-width: 1100px; margin: 0 auto; display:flex; gap: 10px; align-items: center; }
+    .totals { flex: 1; font-size: 13px; opacity: .92; }
+    .small { font-size: 12px; opacity: .75; }
+    .cartbtn { white-space: nowrap; }
+    .modal { position: fixed; inset: 0; background: rgba(0,0,0,.55); display:none; align-items: flex-end; }
+    .sheet { width: 100%; max-height: 78vh; background: #0f1117; border-radius: 16px 16px 0 0; border: 1px solid rgba(255,255,255,.10); overflow: hidden; }
+    .sheet header { position: unset; background: #0f1117; border: none; }
+    .sheet main { padding: 10px 12px 12px; }
+    .item { display:flex; gap: 10px; border-top: 1px solid rgba(255,255,255,.08); padding: 10px 0; align-items: center; }
+    .item img { width: 44px; height: 58px; object-fit: cover; border-radius: 8px; border: 1px solid rgba(255,255,255,.08); }
+    .item .info { flex:1; }
+    .item .info .t { font-weight: 700; font-size: 12px; }
+    .item .info .s { font-size: 12px; opacity: .82; }
+    .item .rm { padding: 8px 10px; }
+    .notice { margin-top: 6px; font-size: 12px; opacity:.72; }
+    .badge { font-size: 11px; padding: 2px 8px; border-radius: 999px; background: rgba(31,111,235,.15); border: 1px solid rgba(31,111,235,.35); }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Catálogo OldBackTCG <span class="badge" id="countBadge">0</span></h1>
+    <div class="row">
+      <input id="q" placeholder="Buscar: pikachu, rocket, vending, gym, etc." />
+      <select id="set"></select>
+      <select id="cond"></select>
+      <select id="sort"></select>
+    </div>
+    <div class="notice" id="status">Cargando cartas…</div>
+  </header>
+
+  <main>
+    <div class="grid" id="grid"></div>
+  </main>
+
+  <div class="footerbar">
+    <div class="wrap">
+      <div class="totals">
+        <div><b>Pedido:</b> <span id="cartCount">0</span> item(s)</div>
+        <div class="small">Total: <span id="cartTotal">$0</span> — se envía por WhatsApp</div>
+      </div>
+      <button class="cartbtn" id="openCart">Ver pedido</button>
+      <button class="primary cartbtn" id="sendWA">Enviar a WhatsApp</button>
+    </div>
+  </div>
+
+  <div class="modal" id="modal">
+    <div class="sheet">
+      <header>
+        <div class="row" style="align-items:center;">
+          <div style="flex:1;">
+            <div style="font-weight:800;">Tu pedido</div>
+            <div class="small" id="sheetSummary">—</div>
+          </div>
+          <button id="closeCart">Cerrar</button>
+        </div>
+      </header>
+      <main>
+        <div id="cartList"></div>
+        <div style="display:flex; gap:10px; margin-top:10px;">
+          <button class="danger" id="clearCart" style="flex:1;">Vaciar</button>
+          <button class="primary" id="sendWA2" style="flex:2;">Enviar a WhatsApp</button>
+        </div>
+        <div class="notice">
+          Tip: si una carta es única, marcala stock=0 cuando se venda y desaparece del catálogo.
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
