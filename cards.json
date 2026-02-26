@@ -1,0 +1,22 @@
+[
+  {
+    "id": "RK-001",
+    "name": "Dark Charmeleon",
+    "set": "Rocket (JP)",
+    "condition": "LP",
+    "price_usd": 4,
+    "stock": 1,
+    "img": "images/RK-001.jpg",
+    "notes": "Back con leve whitening"
+  },
+  {
+    "id": "BS-025",
+    "name": "Charmander (No Rarity)",
+    "set": "Base Set (JP)",
+    "condition": "LP",
+    "price_usd": 2.5,
+    "stock": 1,
+    "img": "images/BS-025.jpg",
+    "notes": "No Rarity"
+  }
+]
