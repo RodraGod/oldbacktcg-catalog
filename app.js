@@ -1,4 +1,4 @@
-const WA_NUMBER = "54911XXXXXXXX"; // <-- poné tu número con 54 + 9 + área + número
+const WA_NUMBER = "5491133956408; // <-- poné tu número con 54 + 9 + área + número
 const CURRENCY = "USD";           // solo para texto
 const DATA_URL = "./cards.json";
 
